@@ -12,13 +12,14 @@ class Book extends Model
         'picture',
         'title',
         'author',
+        'description',
         'publisher',
-        'quantity',
+        'quantityStock',
         'price',
     ];
 
     public function type(): BelongsTo
     {
-        return $this->belongsTo(Type::class);
+        return $this->belongsTo(Type::class ,"type_id","id");
     }
 }

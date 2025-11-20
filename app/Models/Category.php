@@ -12,11 +12,11 @@ class Category extends Model
 
     public function classification(): BelongsTo
     {
-        return $this->belongsTo(Classification::class);
+        return $this->belongsTo(Classification::class,"classification_id","id");
     }
 
     public function types(): HasMany
     {
-        return $this->hasMany(Type::class);
+        return $this->hasMany(Type::class ,"category_id","id");
     }
 }
