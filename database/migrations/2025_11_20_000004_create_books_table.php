@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('type_id')->constrained()->cascadeOnDelete();
             $table->string('picture')->nullable();
             $table->string('title');
             $table->string('author');
