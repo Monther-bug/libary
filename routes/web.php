@@ -6,12 +6,15 @@ use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CartController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', function () {
-    return redirect()->route('admin.classifications.index');
+    return redirect()->route('admin.dashboard');
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::resource('classifications', ClassificationController::class)->names([
 
         'index' => 'classifications.index',
