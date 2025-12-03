@@ -11,9 +11,16 @@ class ClassificationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $classifications = Classification::all();
+        $query = Classification::query();
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $classifications = $query->get();
         return view('admin.classifications.index', compact('classifications'));
     }
 
@@ -44,7 +51,7 @@ class ClassificationController extends Controller
      */
     public function show(Classification $classification)
     {
-        return  view('admin.classifications.show', compact('classification'));
+        return view('admin.classifications.show', compact('classification'));
     }
 
     /**

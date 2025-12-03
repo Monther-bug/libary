@@ -15,11 +15,16 @@ class Category extends Model
 
     public function classification(): BelongsTo
     {
-        return $this->belongsTo(Classification::class,"classification_id","id");
+        return $this->belongsTo(Classification::class, "classification_id", "id");
     }
 
     public function types(): HasMany
     {
-        return $this->hasMany(Type::class ,"category_id","id");
+        return $this->hasMany(Type::class, "category_id", "id");
+    }
+
+    public function books()
+    {
+        return $this->hasManyThrough(Book::class, Type::class, 'category_id', 'type_id');
     }
 }

@@ -10,9 +10,19 @@ use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::with('type')->get();
+        $query = Book::with('type');
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('author', 'like', "%{$search}%");
+            });
+        }
+
+        $books = $query->get();
         return view('admin.books.index', compact('books'));
     }
 
@@ -25,12 +35,16 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
-            'publication_date' => 'required|date',
-            'status' => 'required|in:available,borrowed',
+            'publication_date' => 'nullable|date', // Changed to nullable as it wasn't in migration
+            'status' => 'nullable|in:available,borrowed', // Changed to nullable
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'type_id' => 'required|exists:types,id',
+            'price' => 'required|numeric',
+            'quantityStock' => 'required|integer',
+            'publisher' => 'required|string',
+            'description' => 'required|string',
         ]);
 
         if ($request->hasFile('picture')) {
@@ -51,12 +65,16 @@ class BookController extends Controller
     public function update(Request $request, Book $book)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
-            'publication_date' => 'required|date',
-            'status' => 'required|in:available,borrowed',
+            'publication_date' => 'nullable|date',
+            'status' => 'nullable|in:available,borrowed',
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'type_id' => 'required|exists:types,id',
+            'price' => 'required|numeric',
+            'quantityStock' => 'required|integer',
+            'publisher' => 'required|string',
+            'description' => 'required|string',
         ]);
 
         if ($request->hasFile('picture')) {

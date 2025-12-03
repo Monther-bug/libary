@@ -9,9 +9,16 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::with('classification')->get();
+        $query = Category::with('classification');
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $categories = $query->get();
         return view('admin.categories.index', compact('categories'));
     }
 

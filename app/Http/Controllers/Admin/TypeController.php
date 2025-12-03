@@ -9,9 +9,17 @@ use Illuminate\Http\Request;
 
 class TypeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $types = Type::all();
+        $query = Type::query();
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('edition', 'like', "%{$search}%");
+        }
+
+        $types = $query->get();
         return view('admin.types.index', compact('types'));
     }
 
