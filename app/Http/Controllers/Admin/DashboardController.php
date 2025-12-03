@@ -22,8 +22,13 @@ class DashboardController extends Controller
             'categories' => Category::count(),
         ];
 
-        $chartData = Type::withCount('books')->get();
+        $topAuthors = Book::select('author')
+            ->selectRaw('count(*) as books_count')
+            ->groupBy('author')
+            ->orderByDesc('books_count')
+            ->limit(5)
+            ->get();
 
-        return view('admin.dashboard', compact('stats', 'chartData'));
+        return view('admin.dashboard', compact('stats', 'topAuthors'));
     }
 }
