@@ -3,68 +3,101 @@
 @section('header', 'Classifications')
 
 @section('content')
-    <div class="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200">
-        <div class="px-6 py-5 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">
-                All Classifications
-            </h3>
-            <a href="{{ route('admin.classifications.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
-                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white">All Classifications</h2>
+        <div class="flex items-center gap-4">
+            <form action="{{ route('admin.classifications.index') }}" method="GET" class="relative">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search classifications..."
+                    class="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500 outline-none transition-all">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+            </form>
+            <a href="{{ route('admin.classifications.create') }}"
+                class="inline-flex items-center px-4 py-2 bg-violet-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-violet-500 active:bg-violet-700 focus:outline-none focus:border-violet-700 focus:ring focus:ring-violet-300 disabled:opacity-25 transition">
+                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
                 Add New
             </a>
         </div>
+    </div>
+
+    @if (session('success'))
+        <div
+            class="mb-6 rounded-xl bg-green-500/10 p-4 border border-green-500/20 shadow-lg shadow-green-500/5 animate-fade-in-up">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-green-600 dark:text-green-400" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-green-600 dark:text-green-400">{{ session('success') }}</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <div
+        class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xl rounded-2xl overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
+                <thead class="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            ID
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col"
+                            class="px-6 py-4 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            ID</th>
+                        <th scope="col"
+                            class="px-6 py-4 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                             Name
                         </th>
-                        <th scope="col" class="relative px-6 py-3">
-                            <span class="sr-only">Actions</span>
+                        <th scope="col"
+                            class="px-6 py-4 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Actions
                         </th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
                     @forelse ($classifications as $classification)
-                        <tr class="hover:bg-gray-50 transition-colors duration-150">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
                                 #{{ $classification->id }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                {{ $classification->name }}
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-slate-900 dark:text-slate-100">{{ $classification->name }}
+                                </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex justify-end space-x-3">
-                                    <a href="{{ route('admin.classifications.edit', $classification) }}" class="text-amber-600 hover:text-amber-900 bg-amber-50 hover:bg-amber-100 px-3 py-1 rounded-md transition-colors duration-200">Edit</a>
-                                    <form action="{{ route('admin.classifications.destroy', $classification) }}" method="POST" class="inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1 rounded-md transition-colors duration-200" onclick="return confirm('Are you sure you want to delete this classification?')">Delete</button>
-                                    </form>
+                                <div class="flex justify-end gap-3">
+                                    <a href="{{ route('admin.classifications.edit', $classification) }}"
+                                        class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors">Edit</a>
+                                    <button type="button"
+                                        @click="deleteModalOpen = true; deleteAction = '{{ route('admin.classifications.destroy', $classification) }}'"
+                                        class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors">
+                                        Delete
+                                    </button>
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="px-6 py-10 text-center text-gray-500">
-                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                    <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                                </svg>
-                                <h3 class="mt-2 text-sm font-medium text-gray-900">No classifications</h3>
-                                <p class="mt-1 text-sm text-gray-500">Get started by creating a new classification.</p>
-                                <div class="mt-6">
-                                    <a href="{{ route('admin.classifications.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                        <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                                        </svg>
-                                        Create Classification
-                                    </a>
+                            <td colspan="3" class="px-6 py-10 text-center text-slate-500 dark:text-slate-400">
+                                <div class="flex flex-col items-center justify-center">
+                                    <svg class="h-12 w-12 text-slate-400 dark:text-slate-500 mb-3" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                    </svg>
+                                    <p class="text-lg font-medium text-slate-900 dark:text-white">No classifications found</p>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Get started by creating a new
+                                        classification.</p>
                                 </div>
                             </td>
                         </tr>

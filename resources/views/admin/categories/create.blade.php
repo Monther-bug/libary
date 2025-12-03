@@ -1,35 +1,55 @@
 @extends('layouts.app')
 
-@section('content')
-    <div class="container mx-auto px-4">
-        <h1 class="text-2xl font-bold mb-4">Add New Category</h1>
+@section('header', 'Add New Category')
 
-        <form action="{{ route('admin.categories.store') }}" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            @csrf
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
-                    Name
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" name="name" type="text" placeholder="Category Name" required>
-            </div>
-            <div class="mb-6">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="classification_id">
-                    Classification
-                </label>
-                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="classification_id" name="classification_id" required>
-                    @foreach ($classifications as $classification)
-                        <option value="{{ $classification->id }}">{{ $classification->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="flex items-center justify-between">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                    Create Category
-                </button>
-                <a href="{{ route('admin.categories.index') }}" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
-                    Cancel
-                </a>
-            </div>
-        </form>
+@section('content')
+    <div class="max-w-3xl mx-auto">
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xl rounded-2xl p-8">
+            <form action="{{ route('admin.categories.store') }}" method="POST" class="space-y-6">
+                @csrf
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2" for="name">
+                        Name
+                    </label>
+                    <input
+                        class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500 outline-none transition-all placeholder-slate-400 dark:placeholder-slate-500"
+                        id="name" name="name" type="text" placeholder="Category Name" required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
+                        for="classification_id">
+                        Classification
+                    </label>
+                    <div class="relative">
+                        <select
+                            class="w-full bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500 outline-none transition-all appearance-none"
+                            id="classification_id" name="classification_id" required>
+                            @foreach ($classifications as $classification)
+                                <option value="{{ $classification->id }}">{{ $classification->name }}</option>
+                            @endforeach
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end gap-4 pt-4 border-t border-white/5">
+                    <a href="{{ route('admin.categories.index') }}"
+                        class="px-6 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all">
+                        Cancel
+                    </a>
+                    <button
+                        class="px-6 py-2.5 rounded-xl bg-violet-600 text-white text-sm font-medium hover:bg-violet-500 focus:ring-4 focus:ring-violet-500/20 transition-all shadow-lg shadow-violet-500/20"
+                        type="submit">
+                        Create Category
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 @endsection
