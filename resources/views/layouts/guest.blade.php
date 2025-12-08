@@ -38,10 +38,28 @@
                             <a href="{{ route('contact') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('contact') ? 'border-indigo-400 text-gray-900 dark:text-gray-100' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
                                 Contact
                             </a>
+                        <a href="{{ route('user.home') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('user.home') ? 'border-indigo-400 text-gray-900 dark:text-gray-100' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
+                                Books
+                            </a>
                         </div>
                     </div>
-                    <div class="flex items-center">
-                        <a href="{{ route('admin.login') }}" class="text-sm text-gray-700 dark:text-gray-300 underline">Admin Login</a>
+                    <div class="flex items-center space-x-4">
+                        @auth
+                            <div class="flex items-center text-sm font-medium text-gray-500 dark:text-gray-400">
+                                <span class="mr-2">{{ Auth::user()->name }}</span>
+                                <form method="POST" action="{{ route('logout') }}" class="inline">
+                                    @csrf
+                                    <button type="submit" class="underline hover:text-gray-700 dark:hover:text-gray-300">
+                                        Log Out
+                                    </button>
+                                </form>
+                            </div>
+                        @else
+                            <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-300 underline">Log in</a>
+                            <a href="{{ route('register') }}" class="text-sm text-indigo-600 dark:text-indigo-400 font-bold hover:text-indigo-800 dark:hover:text-indigo-300">Register</a>
+                        @endauth
+                        <div class="border-l border-gray-300 dark:border-gray-600 h-4 mx-2"></div>
+                        <a href="{{ route('admin.login') }}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">Admin</a>
                     </div>
                 </div>
             </div>

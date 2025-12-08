@@ -9,10 +9,24 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\GuestController;
+use App\Http\Controllers\User\HomeController as UserHomeController;
+use App\Http\Controllers\User\AuthController as UserAuthController;
 
 Route::get('/', [GuestController::class, 'index'])->name('home');
 Route::get('/about', [GuestController::class, 'about'])->name('about');
 Route::get('/contact', [GuestController::class, 'contact'])->name('contact');
+
+// User Authentication Routes
+Route::get('/login', [UserAuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [UserAuthController::class, 'login']);
+Route::get('/register', [UserAuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [UserAuthController::class, 'register']);
+Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [UserHomeController::class, 'index'])->name('user.home');
+    Route::get('/books/{book}', [UserHomeController::class, 'show'])->name('user.books.show');
+});
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
