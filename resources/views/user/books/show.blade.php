@@ -15,8 +15,8 @@
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
             <div class="md:flex">
                 <div class="md:flex-shrink-0 md:w-1/3 bg-gray-200 dark:bg-gray-700">
-                    @if($book->picture)
-                        <img class="h-full w-full object-cover md:h-full md:w-full" src="{{ asset('storage/' . $book->picture) }}" alt="{{ $book->title }}">
+                    @if($book->image_url)
+                        <img class="h-full w-full object-cover md:h-full md:w-full" src="{{ $book->image_url }}" alt="{{ $book->title }}">
                     @else
                         <div class="h-96 md:h-full w-full flex items-center justify-center bg-indigo-100 dark:bg-indigo-900 text-indigo-500 dark:text-indigo-300">
                             <svg class="h-32 w-32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,13 +59,31 @@
                         </div>
                         
                         <div class="mt-8">
-                             <!-- Placeholder for Add to Cart or similar -->
-                            <button type="button" class="w-full md:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors {{ $book->quantityStock <= 0 ? 'opacity-50 cursor-not-allowed' : '' }}" {{ $book->quantityStock <= 0 ? 'disabled' : '' }}>
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                                Add to Cart
-                            </button>
+                            @if(session('success'))
+                                <div class="mb-4 text-green-600 dark:text-green-400 text-sm">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+                            @if(session('error'))
+                                <div class="mb-4 text-red-600 dark:text-red-400 text-sm">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
+
+                            <form action="{{ route('user.cart.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="book_id" value="{{ $book->id }}">
+                                <div class="flex items-center space-x-4 mb-4">
+                                     <label for="quantity" class="text-sm font-medium text-gray-700 dark:text-gray-300">Quantity:</label>
+                                     <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ $book->quantityStock }}" class="w-20 rounded-md border-gray-300 dark:border-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:text-white">
+                                </div>
+                                <button type="submit" class="w-full md:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors {{ $book->quantityStock <= 0 ? 'opacity-50 cursor-not-allowed' : '' }}" {{ $book->quantityStock <= 0 ? 'disabled' : '' }}>
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    Add to Cart
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

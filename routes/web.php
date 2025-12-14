@@ -26,6 +26,11 @@ Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [UserHomeController::class, 'index'])->name('user.home');
     Route::get('/books/{book}', [UserHomeController::class, 'show'])->name('user.books.show');
+    
+    // Cart Routes
+    Route::get('/cart', [App\Http\Controllers\User\CartController::class, 'index'])->name('user.cart.index');
+    Route::post('/cart', [App\Http\Controllers\User\CartController::class, 'store'])->name('user.cart.store');
+    Route::delete('/cart/{cart}', [App\Http\Controllers\User\CartController::class, 'destroy'])->name('user.cart.destroy');
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {

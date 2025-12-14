@@ -37,8 +37,8 @@
                     <a href="{{ route('user.books.show', $book) }}" class="group">
                         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 transform group-hover:-translate-y-1 group-hover:shadow-xl h-full flex flex-col">
                             <div class="aspect-w-3 aspect-h-4 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
-                                @if($book->picture)
-                                    <img src="{{ asset('storage/' . $book->picture) }}" alt="{{ $book->title }}" class="w-full h-64 object-cover">
+                                @if($book->image_url)
+                                    <img src="{{ $book->image_url }}" alt="{{ $book->title }}" class="w-full h-64 object-cover">
                                 @else
                                     <div class="w-full h-64 flex items-center justify-center bg-indigo-100 dark:bg-indigo-900 text-indigo-500 dark:text-indigo-300">
                                         <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">

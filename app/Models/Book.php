@@ -25,4 +25,15 @@ class Book extends Model
     {
         return $this->belongsTo(Type::class ,"type_id","id");
     }
+
+    public function getImageUrlAttribute()
+    {
+        if ($this->picture) {
+            if (str_starts_with($this->picture, 'http')) {
+                return $this->picture;
+            }
+            return asset('storage/' . $this->picture);
+        }
+        return null; // Or return a default image URL
+    }
 }
