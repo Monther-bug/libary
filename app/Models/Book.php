@@ -34,6 +34,6 @@ class Book extends Model
             }
             return asset('storage/' . $this->picture);
         }
-        return null; // Or return a default image URL
+        return asset('images/book-cover.png');
     }
 }
