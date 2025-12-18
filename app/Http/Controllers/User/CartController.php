@@ -51,6 +51,27 @@ class CartController extends Controller
     }
     
 
+    public function update(Request $request, Cart $cart)
+    {
+        if ($cart->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $book = $cart->book;
+
+        if ($book->quantityStock < $request->quantity) {
+            return back()->with('error', 'Not enough stock available.');
+        }
+
+        $cart->update(['quantity' => $request->quantity]);
+
+        return back()->with('success', 'Cart updated successfully.');
+    }
+
     public function destroy(Cart $cart)
     {
         if ($cart->user_id !== Auth::id()) {

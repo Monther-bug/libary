@@ -30,7 +30,13 @@ Route::middleware(['auth'])->group(function () {
     // Cart Routes
     Route::get('/cart', [App\Http\Controllers\User\CartController::class, 'index'])->name('user.cart.index');
     Route::post('/cart', [App\Http\Controllers\User\CartController::class, 'store'])->name('user.cart.store');
+    Route::patch('/cart/{cart}', [App\Http\Controllers\User\CartController::class, 'update'])->name('user.cart.update');
     Route::delete('/cart/{cart}', [App\Http\Controllers\User\CartController::class, 'destroy'])->name('user.cart.destroy');
+
+    // Order Routes
+    Route::get('/orders', [App\Http\Controllers\User\OrderController::class, 'index'])->name('user.orders.index');
+    Route::get('/checkout', [App\Http\Controllers\User\OrderController::class, 'create'])->name('user.orders.create');
+    Route::post('/orders', [App\Http\Controllers\User\OrderController::class, 'store'])->name('user.orders.store');
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {

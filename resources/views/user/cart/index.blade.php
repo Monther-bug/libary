@@ -67,7 +67,31 @@
                                         {{ number_format($item->book->price, 2) }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                        {{ $item->quantity }}
+                                        <div class="flex items-center space-x-2">
+                                            <form action="{{ route('user.cart.update', $item) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="quantity" value="{{ $item->quantity - 1 }}">
+                                                <button type="submit" class="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none" {{ $item->quantity <= 1 ? 'disabled style=opacity:0.5' : '' }}>
+                                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+
+                                            <span class="text-gray-900 dark:text-white font-medium">{{ $item->quantity }}</span>
+
+                                            <form action="{{ route('user.cart.update', $item) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="quantity" value="{{ $item->quantity + 1 }}">
+                                                <button type="submit" class="p-1 rounded-full text-gray-500 hover:text-indigo-600 focus:outline-none" {{ $item->quantity >= $item->book->quantityStock ? 'disabled style=opacity:0.5' : '' }}>
+                                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-semibold">
                                         {{ number_format($itemTotal, 2) }}
@@ -86,9 +110,9 @@
                 </div>
                 <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 flex justify-between items-center">
                     <span class="text-lg font-bold text-gray-900 dark:text-white">Total: {{ number_format($grandTotal, 2) }}</span>
-                    <button class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <a href="{{ route('user.orders.create') }}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Checkout
-                    </button>
+                    </a>
                 </div>
             </div>
         @endif
